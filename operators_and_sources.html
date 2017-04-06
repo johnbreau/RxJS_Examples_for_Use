@@ -1,0 +1,408 @@
+
+<!-- //From YouTube video: https://www.youtube.com/watch?v=ei7FsoXKPl0&t=3482s -->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.1/Rx.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <ul id="posts"></ul>
+  </div>
+  <hr>
+  <h3>Github User:</h3>
+  <input type="text" id="input"></input>
+  <h1 id="name"></h1>
+  <p id="blog"></p>
+  <p id="repos"></p>
+  <div id="posts"></div>
+<script>
+
+//--------------------GRABBING A SOURCE AND ASSIGINING IT TO A VARIABLE--------------
+
+// this.primaryPaymentMethod$ = this._paymentMethods$
+//     .map((method) => {
+//       const primary = method.find(method => method.isPrimary)
+//       return primary
+//     })
+
+// --------------------OBSERVABLES USING BEHAVIOR SUBJECT -----------------------------
+// let bSubject = new Rx.BehaviorSubject('behavoir subject a');
+//
+// bSubject.next('behavoir subject b');
+//
+// bSubject.subscribe((value) => {
+//   console.log('sub got value', value)
+// });
+//
+// bSubject.next('behavoir subject c');
+
+// --------------------OBSERVABLES USING SUBJECT -----------------------------
+let subject = new Rx.Subject('regular subject a');
+
+subject.next('regular subject b');
+
+subject.subscribe((value) => {
+  console.log('sub got value', value)
+});
+
+subject.next('regular subject c');
+
+// --------------------OBSERVABLES USING MERGEMAP AND SWITCHMAP...-----------------------
+
+// This double subscribe can be fixed
+// Rx.Observable.of('Hello ')
+//   .subscribe(v => {
+//     Rx.Observable.of(v + 'Everyone')
+//       .subscribe(x => console.log(x))
+//   })
+
+// by this...
+  // Rx.Observable.of('Hello')
+  //   .mergeMap( v => {
+  //     return Rx.Observable.of(v + ' Everyone')
+  //   })
+  //   .subscribe(x => console.log(x))
+
+// ----------------
+
+// function getUser(username){
+//   return $.ajax({
+//     url:'https://api.github.com/users/' +username,
+//     dataType: 'jsonp'
+//   }).promise();
+// }
+//
+//  const inputSource$ = Rx.Observable.fromEvent($('#input'), 'keyup')
+//   .map( e => e.target.value)
+//   .switchMap( v => {
+//     return Rx.Observable.fromPromise(getUser(v));
+//   })
+//
+//   inputSource$.subscribe( x => {
+//     $('#name').text(x.data.name);
+//     $('#blog').text(x.data.blog);
+//     $('#repos').text(x.data.public_repos);
+//   });
+
+// --------------------OBSERVABLES USING MERGE AND CONCAT...---------------------------------
+
+// Rx.Observable.of('Hello ')
+//   .merge(Rx.Observable.of('Everyone'))
+//   .subscribe( x => console.log(x))
+
+//----------------
+
+// Rx.Observable.interval(2000)
+//   .merge(Rx.Observable.interval(500))
+//   .take(25)
+//   .subscribe(x => console.log(x));
+
+//---------------
+
+// const source1$ = Rx.Observable.interval(2000).map( v => 'Merge 1 ' + v);
+// const source2$ = Rx.Observable.interval(500).map( v => 'Merge 2 ' + v);
+//
+// Rx.Observable.merge(source1$, source2$)
+//   .take(25)
+//   .subscribe(x => console.log(x))
+
+//---------------
+
+// const source1$ = Rx.Observable.range(0, 5).map( v => 'Source 1 ' + v);
+// const source2$ = Rx.Observable.range(6, 5).map( v => 'Source 2 ' + v);
+//
+// Rx.Observable.concat(source1$, source2$)
+//   .subscribe(x => console.log(x))
+
+// --------------------OBSERVABLES USING MAP AND PLUCK...---------------------------------
+
+// const source$ = Rx.Observable.interval(1000)
+//   .take(10)
+//   .map(v => v * v);
+//
+// source$.subscribe( v => console.log(v));
+
+// ------------------------
+
+// const source$ = Rx.Observable.from(['John', 'Tom', 'Sean'])
+//   .map(v => v.toUpperCase())
+//   .map(v => 'I am ' + v)
+//
+// source$.subscribe( v => console.log(v))
+
+// ------------------------
+
+// const users = [
+//   {name:'John', age: 34},
+//   {name:'Tom', age: 37},
+//   {name:'Sean', age: 43},
+//   {name:'Andy', age: 49}
+// ]
+//
+// const userStream$ = Rx.Observable.from(users)
+//   .pluck('age')
+//
+// userStream$.subscribe( x=> console.log(x))
+
+
+// --------------------OBSERVABLES FROM INTERVAL, TIME AND RANGE...------------------------
+
+// const source$ = Rx.Observable.interval(1000)
+//   .take(5);
+//
+// source$.subscribe(
+//     x => {
+//       console.log(x);
+//     },
+//     err => {
+//       console.log(err);
+//     },
+//     complete => {
+//       console.log('completed');
+//     });
+
+// ---------
+
+// const source$ = Rx.Observable.timer(1000, 1000)
+//   .take(5);
+//
+// source$.subscribe(
+//     x => {
+//       console.log(x);
+//     },
+//     err => {
+//       console.log(err);
+//     },
+//     complete => {
+//       console.log('completed');
+//     });
+
+// ---------
+
+  // const source$ = Rx.Observable.range(1000, 10000)
+  //   .take(20);
+  //
+  // source$.subscribe(
+  //     x => {
+  //       console.log(x);
+  //     },
+  //     err => {
+  //       console.log(err);
+  //     },
+  //     complete => {
+  //       console.log('completed');
+  //     });
+
+  // ---------
+
+  // function getGithubUser(username){
+  //   return $.ajax({
+  //     url:'https://api.github.com/users/'+username,
+  //     dataType: 'jsonp'
+  //   }).promise();
+  // }
+  //
+  // Rx.Observable.fromPromise(getGithubUser('johnbreau'))
+  //   .map(user => user.data.name)
+  //   .subscribe(name => {
+  //     console.log(name)
+  // })
+
+// --------------------OBSERVABLE FROM A PROMISE...------------------------
+
+// const myPromise = new Promise((resolve, reject) => {
+//   console.log('Creating Promise');
+//   setTimeout(() => {
+//       resolve('Hello from promise');
+//   }, 3000);
+// });
+//
+// //  To run as promise...
+//   myPromise.then(x => {
+//     console.log(x);
+//   });
+//
+// //  To run as observable...
+//   const source$  = Rx.Observable.fromPromise(myPromise);
+//   source$.subscribe(x => console.log(x));
+
+// ---------
+
+//To run as AJAX call...
+  // function getUser(username){
+  //   return $.ajax({
+  //     url:'https://api.github.com/users/'+username,
+  //     dataType: 'jsonp'
+  //   }).promise();
+  // }
+  //
+  // const inputSource$ = Rx.Observable.fromEvent($('#input'), 'keyup');
+  //
+  // inputSource$.subscribe( e => {
+  //   Rx.Observable.fromPromise(getUser(e.target.value))
+  //     .subscribe( x => {
+  //       $('#name').text(x.data.name);
+  //       $('#blog').text(x.data.blog);
+  //       $('#repos').text(x.data.public_repos);
+  //     });
+  // })
+
+// --------------------OBSERVABLE FROM SCRATCH...------------------------
+
+// const source$ = new Rx.Observable(observer => {
+//   console.log('creating observer');
+//   observer.next('hello world');
+//   observer.next('Another value');
+//
+//   observer.error(new Error('Error something went wrong'))
+//
+//   setTimeout(x => {
+//     observer.next('Yet another value');
+//     observer.complete();
+//   }, 3000);
+// });
+//
+// source$
+// .catch(err => Rx.Observable.of(err))
+// .subscribe(
+//   x => {
+//   console.log(x);
+// },
+//   err => {
+//     console.log(err);
+// },
+//   complete => {
+//     console.log('completed');
+// });
+
+// --------------------OUTPUT FROM ARRAYS WITH FROM OPERATOR...------------------------
+
+// const numbers = [34,35,2,35,67,76]
+//
+// const numbers$ = Rx.Observable.from(numbers);
+// numbers$.subscribe(
+//   v => {
+//     console.log(v);
+// },
+//   err => {
+//     console.log(err);
+// },
+//   complete => {
+//     console.log('Complete');
+// });
+
+// ---------
+
+//
+// const posts = [
+//   {
+//     title: 'Title One',
+//     body: 'Now is the time for all'
+//   },
+//   {
+//     title: 'Title Two',
+//     body: 'good men to'
+//   },
+//   {
+//     title: 'Title Three',
+//     body: 'come to the aid'
+//   },
+//   {
+//     title: 'Title Four',
+//     body: 'of their country.'
+//   },
+// ];
+//
+// const posts$ = Rx.Observable.from(posts);
+// posts$.subscribe(
+//   post => {
+//     console.log(post);
+//     $('#posts').append("<li><h3>" + post.title + "</h3><p>" + post.body + "</p></li>");
+// },
+//   err => {
+//     console.log(err);
+// },
+//   complete => {
+//     console.log('Complete');
+// });
+
+// ---------
+
+// const set = new Set ([ 'Hello', 44, { title: 'Set Title', body: 'Set Body'}]);
+//
+// const sets$ = Rx.Observable.from(set);
+// sets$.subscribe(
+//   set => {
+//     console.log(set);
+// },
+//   err => {
+//     console.log(err);
+// },
+//   complete => {
+//     console.log('Complete');
+// });
+//
+
+// ---------
+
+//
+// const map = new Map ([[1,2],[3,4],[5,6]]);
+//
+// const maps$ = Rx.Observable.from(map);
+// maps$.subscribe(
+//   map => {
+//     console.log(map);
+// },
+//   err => {
+//     console.log(err);
+// },
+//   complete => {
+//     console.log('Complete');
+// });
+
+// --------------------OUTPUT FROM EVENTS WITH FROMEVENT OPERATOR...-------------------------
+//
+// const btn = $('#btn');
+// const input = $('#input');
+// const output = $('#output')
+//
+// const btnStream$ = Rx.Observable.fromEvent(btn, 'click');
+// btnStream$.subscribe(
+//   function(e){
+//     console.log('Clicked');
+//   },
+//   function(err){
+//     console.log('err');
+//   },
+//   function(){
+//     console.log('completed');
+//   });
+
+//
+//   const inptStream$ = Rx.Observable.fromEvent(input, 'keyup');
+//   inptStream$.subscribe(
+//     function(e){
+//       let outputText = e.currentTarget.value;
+//       output.append(outputText);
+//     },
+//   );
+//
+//   const moveStream$ = Rx.Observable.fromEvent(document, 'mousemove');
+//   moveStream$.subscribe(
+//     function(e){
+//       console.log(e.target.value);
+//       output.html("X: " + e.clientX + " Y: " + e.clientY);
+//     },
+//   );
+// --------------------END OUTPUT FROM EVENTS------------------------
+
+</script>
+</body>
+</html>
